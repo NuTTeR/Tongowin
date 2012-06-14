@@ -1,8 +1,5 @@
-Gyazo
-http://gyazo.com/
+Tongowin
 
-Gyazo for Mac was first developed by Toshiyuki Masui
+Tongo forked from Gyazo project
 
-Gyazowin was developed by tnj
-http://nothing.sh/blog/archives/44
-
+http://tongo.nu11er.ru/
