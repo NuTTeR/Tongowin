@@ -856,7 +856,7 @@ BOOL uploadFile(HWND hwnd, LPCTSTR fileName)
 		return FALSE;
 	}
 
-	const INT iTimeout = 120000;
+	const INT iTimeout = 60000;
 	if (!InternetSetOption(hSession, INTERNET_OPTION_RECEIVE_TIMEOUT, (LPVOID) &iTimeout, sizeof(INT)))
 	{
 		MessageBox(hwnd, _T("Cannot set timeout"), szTitle, MB_ICONERROR | MB_OK);
@@ -883,7 +883,7 @@ BOOL uploadFile(HWND hwnd, LPCTSTR fileName)
 	}
 
 	// User-Agent‚ðŽw’è
-	const TCHAR* ua = _T("User-Agent: Tongo-Win/1.1\r\n");
+	const TCHAR* ua = _T("User-Agent: Tongo-Win/1.2\r\n");
 	BOOL bResult = HttpAddRequestHeaders(
 		hRequest, ua, _tcslen(ua), 
 		HTTP_ADDREQ_FLAG_ADD | HTTP_ADDREQ_FLAG_REPLACE);
@@ -905,12 +905,23 @@ BOOL uploadFile(HWND hwnd, LPCTSTR fileName)
 	}
 
 	// Custom header version addition
-	const TCHAR* xver = _T("X-Tongo-Version: 1.1\r\n");
+	const TCHAR* xver = _T("X-Tongo-Version: 1.2\r\n");
 	BOOL xverResult = HttpAddRequestHeaders(
 		hRequest, xver, _tcslen(xver), 
 		HTTP_ADDREQ_FLAG_ADD | HTTP_ADDREQ_FLAG_REPLACE);
 	if (FALSE == xverResult) {
 		MessageBox(hwnd, _T("Cannot set version header"),
+			szTitle, MB_ICONERROR | MB_OK);
+		return FALSE;
+	}
+
+	// Custom header state addition
+	const TCHAR* xstate = _T("X-Tongo-State: Beta\r\n");
+	BOOL xstateResult = HttpAddRequestHeaders(
+		hRequest, xstate, _tcslen(xstate), 
+		HTTP_ADDREQ_FLAG_ADD | HTTP_ADDREQ_FLAG_REPLACE);
+	if (FALSE == xstateResult) {
+		MessageBox(hwnd, _T("Cannot set state header"),
 			szTitle, MB_ICONERROR | MB_OK);
 		return FALSE;
 	}
