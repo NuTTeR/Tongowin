@@ -855,6 +855,12 @@ BOOL uploadFile(HWND hwnd, LPCTSTR fileName)
 			szTitle, MB_ICONERROR | MB_OK);
 		return FALSE;
 	}
+
+	const INT iTimeout = 120000;
+	if (!InternetSetOption(hSession, INTERNET_OPTION_RECEIVE_TIMEOUT, (LPVOID) &iTimeout, sizeof(INT)))
+	{
+		MessageBox(hwnd, _T("Cannot set timeout"), szTitle, MB_ICONERROR | MB_OK);
+	}
 	
 	// 接続先
 	HINTERNET hConnection = InternetConnect(hSession, 
@@ -979,7 +985,9 @@ BOOL uploadFile(HWND hwnd, LPCTSTR fileName)
 		}
 	} else {
 		// アップロード失敗...
-		MessageBox(hwnd, _T("Failed to upload"), szTitle, MB_ICONERROR | MB_OK);
+		TCHAR szError[32];
+		_stprintf(szError, _T("Failed to upload (Error #%d)"), GetLastError());
+		MessageBox(hwnd, szError, szTitle, MB_ICONERROR | MB_OK);
 	}
 
 	return FALSE;
